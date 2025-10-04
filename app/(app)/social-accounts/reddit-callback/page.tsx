@@ -9,7 +9,7 @@ export default function RedditCallbackPage() {
   useEffect(() => {
     const code = params.get("code")
     const state = params.get("state")
-    const authRaw = sessionStorage.getItem("adtask_auth")
+    const authRaw = localStorage.getItem("adtask_auth") || sessionStorage.getItem("adtask_auth")
     if (!code || !state || !authRaw) {
       if (window.opener) {
         window.opener.postMessage({ type: "reddit_oauth_done", ok: false }, "*")
@@ -30,7 +30,7 @@ export default function RedditCallbackPage() {
             "content-type": "application/json",
             authorization,
           },
-          body: JSON.stringify({ code, state, redirect_uri: `${window.location.origin}/social-accounts/reddit-callback` }),
+          body: JSON.stringify({ code, state, redirect_uri: `${window.location.origin}/social-accounts/reddit-callback.html` }),
         })
         if (!resp.ok) throw new Error(await resp.text())
         if (window.opener) {
