@@ -52,15 +52,18 @@ export default function SocialAccountsPage() {
   const [credStatus, setCredStatus] = useState<"unknown" | "ok" | "invalid">("unknown")
   const { toast } = useToast()
 
-  // Persist auth in session (ephemeral for demo)
+  // Persist auth in storage so popup can read it
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem("adtask_auth")
+      const raw = localStorage.getItem("adtask_auth") || sessionStorage.getItem("adtask_auth")
       if (raw) setAuth(JSON.parse(raw))
     } catch {}
   }, [])
   useEffect(() => {
-    if (auth) sessionStorage.setItem("adtask_auth", JSON.stringify(auth))
+    if (auth) {
+      sessionStorage.setItem("adtask_auth", JSON.stringify(auth))
+      localStorage.setItem("adtask_auth", JSON.stringify(auth))
+    }
   }, [auth])
 
   const services = useMemo(
@@ -321,7 +324,7 @@ function RedditOAuthButton({ auth, label = "Connect via Reddit OAuth" }: { auth:
         try {
           const u = new URL(url)
           // Force redirect_uri to our callback if backend returned a generic one
-          const desired = `${window.location.origin}/social-accounts/reddit-callback`
+          const desired = `${window.location.origin}/social-accounts/reddit-callback.html`
           u.searchParams.set("redirect_uri", desired)
           url = u.toString()
         } catch { /* leave as-is if not a valid URL */ }
