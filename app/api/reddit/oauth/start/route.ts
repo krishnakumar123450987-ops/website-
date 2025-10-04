@@ -7,7 +7,8 @@ export async function POST(request: NextRequest) {
   if (!auth) return NextResponse.json({ error: "Missing Authorization" }, { status: 401 })
 
   try {
-    const redirect = encodeURIComponent(`${request.nextUrl.origin}/social-accounts/reddit-callback`)
+    // Use static HTML callback to avoid Next.js chunk loading issues in popup
+    const redirect = encodeURIComponent(`${request.nextUrl.origin}/social-accounts/reddit-callback.html`)
     // Backend expects GET /api/reddit-oauth/auth-url (optionally with redirect_uri)
     const url = `${ADTASK_BASE_URL}/api/reddit-oauth/auth-url?redirect_uri=${redirect}`
     const resp = await fetch(url, {
