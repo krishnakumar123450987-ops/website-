@@ -9,6 +9,23 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Ensure proper routing for Netlify
+  trailingSlash: false,
+  // Handle dynamic routes
+  async redirects() {
+    return [
+      {
+        source: '/reddit%20Automation',
+        destination: '/reddit-automation',
+        permanent: true,
+      },
+      {
+        source: '/reddit Automation',
+        destination: '/reddit-automation',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig

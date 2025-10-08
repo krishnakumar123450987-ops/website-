@@ -1,5 +1,5 @@
 [build]
-   command = "pnpm install && pnpm run build"
+  command = "npm install && npm run build"
   publish = ".next"
 
 [[plugins]]
@@ -9,3 +9,20 @@
   NEXT_USE_NETLIFY_EDGE = "true" 
   NODE_VERSION = "20"
   NPM_FLAGS = "--no-optional"
+
+# Redirect rules for common URL patterns
+[[redirects]]
+  from = "/reddit%20Automation"
+  to = "/reddit-automation"
+  status = 301
+
+[[redirects]]
+  from = "/reddit Automation"
+  to = "/reddit-automation"
+  status = 301
+
+# Handle client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
