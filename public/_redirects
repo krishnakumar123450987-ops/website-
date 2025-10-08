@@ -1,0 +1,11 @@
+# Redirect malformed URLs
+/reddit%20Automation /reddit-automation 301
+/reddit Automation /reddit-automation 301
+/appreddit-automation /reddit-automation 301
+/app/reddit-automation /reddit-automation 301
+
+# Handle Next.js App Router
+/reddit-automation /reddit-automation 200
+
+# Catch all for client-side routing
+/* /index.html 200

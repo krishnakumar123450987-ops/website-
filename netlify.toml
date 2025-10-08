@@ -1,12 +1,12 @@
 [build]
   command = "npm install && npm run build"
-  publish = ".next"
+  publish = "out"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
-  NEXT_USE_NETLIFY_EDGE = "true" 
+  NEXT_USE_NETLIFY_EDGE = "false" 
   NODE_VERSION = "20"
   NPM_FLAGS = "--no-optional"
 
@@ -31,7 +31,13 @@
   to = "/reddit-automation"
   status = 301
 
-# Handle client-side routing
+# Handle Next.js App Router
+[[redirects]]
+  from = "/reddit-automation"
+  to = "/reddit-automation"
+  status = 200
+
+# Handle client-side routing for Next.js
 [[redirects]]
   from = "/*"
   to = "/index.html"
