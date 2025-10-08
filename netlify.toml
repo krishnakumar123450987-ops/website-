@@ -21,6 +21,16 @@
   to = "/reddit-automation"
   status = 301
 
+[[redirects]]
+  from = "/appreddit-automation"
+  to = "/reddit-automation"
+  status = 301
+
+[[redirects]]
+  from = "/app/reddit-automation"
+  to = "/reddit-automation"
+  status = 301
+
 # Handle client-side routing
 [[redirects]]
   from = "/*"

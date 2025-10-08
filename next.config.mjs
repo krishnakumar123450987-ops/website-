@@ -24,6 +24,16 @@ const nextConfig = {
         destination: '/reddit-automation',
         permanent: true,
       },
+      {
+        source: '/appreddit-automation',
+        destination: '/reddit-automation',
+        permanent: true,
+      },
+      {
+        source: '/app/reddit-automation',
+        destination: '/reddit-automation',
+        permanent: true,
+      },
     ]
   },
 }
