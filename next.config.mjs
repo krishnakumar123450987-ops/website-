@@ -11,9 +11,9 @@ const nextConfig = {
   },
   // Ensure proper routing for Netlify
   trailingSlash: false,
-  // Output configuration for Netlify
-  output: 'export',
-  distDir: 'out',
+  // Remove output: 'export' to enable API routes
+  // output: 'export',
+  // distDir: 'out',
   // Handle dynamic routes
   async redirects() {
     return [

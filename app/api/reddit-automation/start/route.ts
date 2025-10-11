@@ -12,6 +12,36 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    // First check if we have valid Reddit accounts
+    try {
+      const redditResponse = await fetch(`${ADTASK_BASE_URL}/api/reddit-oauth/status`, {
+        method: "GET",
+        headers: {
+          authorization: auth,
+          "content-type": "application/json",
+        },
+      });
+      
+      if (redditResponse.ok) {
+        const redditData = await redditResponse.json();
+        console.log('Reddit OAuth status for automation start:', redditData);
+        
+        // Check if user has valid Reddit token (even if connected=false)
+        const hasValidToken = redditData?.has_refresh_token || redditData?.token_expires_at;
+        const hasUsername = redditData?.reddit_username;
+        
+        if (!hasValidToken || !hasUsername) {
+          return NextResponse.json({
+            success: false,
+            message: "No valid Reddit account connected. Please connect a Reddit account first.",
+            error: "NO_REDDIT_ACCOUNT"
+          }, { status: 400 });
+        }
+      }
+    } catch (redditError) {
+      console.warn('Failed to check Reddit status:', redditError);
+    }
+
     // Try to start automation in ADTASK backend
     const response = await fetch(`${ADTASK_BASE_URL}/api/reddit-automation/start`, {
       method: "POST",

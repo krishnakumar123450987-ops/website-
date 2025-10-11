@@ -102,6 +102,7 @@ export default function RedditAutomationPage() {
     } catch {}
   }, []);
 
+
   // Local storage functions for rules
   const saveRulesToStorage = (rulesToSave: AutomationRule[]) => {
     try {
@@ -138,7 +139,7 @@ export default function RedditAutomationPage() {
           const statusData = await statusResponse.json();
           console.log('Automation status from API:', statusData);
           
-          // Update status with real data
+          // Update status with real data from API
           setStatus({
             is_running: statusData.data?.running || false,
             active_rules: statusData.data?.enabled_users_count || 0,
@@ -235,6 +236,7 @@ export default function RedditAutomationPage() {
 
     initializeAutomation();
   }, [auth]);
+
 
   // Create new automation rule (with API integration)
   async function createRule() {
@@ -451,6 +453,26 @@ export default function RedditAutomationPage() {
       // Try to control via API first
       if (auth) {
         try {
+          if (newRunningState) {
+            // First try to activate Reddit account for automation
+            try {
+              const activateResponse = await fetch('/api/reddit-automation/activate-account', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': auth.mode === 'bearer' && auth.token ? `Bearer ${auth.token}` : `Basic ${btoa(`${auth.username}:${auth.password}`)}`,
+                },
+              });
+              
+              if (activateResponse.ok) {
+                const activateData = await activateResponse.json();
+                console.log('Reddit account activated:', activateData);
+              }
+            } catch (activateError) {
+              console.warn('Failed to activate Reddit account:', activateError);
+            }
+          }
+          
           const endpoint = newRunningState ? '/api/reddit-automation/start' : '/api/reddit-automation/stop';
           const response = await fetch(endpoint, {
             method: 'POST',
